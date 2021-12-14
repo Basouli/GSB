@@ -6,7 +6,7 @@ case 'selectionnerFiche':
     $visiteurs = $pdo->getVisiteursFichesEnAttentes();
     require 'vues/v_listeVisiteur.php';
     break;
-case 'changerEtats':
+case 'changerEtats': 
     $values = explode('&', filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING));
     $_SESSION['VF-idVisiteur'] = $values[0];
     $_SESSION['VF-mois'] =  $values[1];
