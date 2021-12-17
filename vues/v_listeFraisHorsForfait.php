@@ -44,24 +44,26 @@
                     <td class="<?php echo $libelleColor; ?>"><?php echo $date ?></td>
                     <td class="<?php echo $libelleColor; ?>"><?php echo $libelle ?></td>
                     <td class="<?php echo $libelleColor; ?>"><?php echo $montant ?></td>
+                    <td class="<?php echo $libelleColor; ?>">
                     <?php 
                     if ($uc == 'gererFrais') {
-                        echo '<td class="' . $libelleColor . '"><a href="index.php?uc=gererFrais&action=supprimerFrais&idFrais=' . $id . '" 
-                           onclick="return confirm(\'Voulez-vous vraiment supprimer ce frais?\');">Supprimer ce frais</a></td>';
+                        echo '<a class="btn btn-danger" href="index.php?uc=gererFrais&action=supprimerFrais&idFrais=' . $id . '" 
+                           onclick="return confirm(\'Voulez-vous vraiment supprimer ce frais?\');">Supprimer ce frais</a>';
                     } else if ($uc == 'validerFrais') {
-                        //SI IL EST DEJA REFUSER ON AFFICHE UN BOUTON ACCEPTER
+                        //ACCEPTER OU REFUSER SELON SON ETAT
                         if (strcmp(substr($libelle, 0, 9), 'REFUSE : ')) {
-                            echo '<td class="' . $libelleColor . '"><a href="index.php?uc=validerFrais&action=refuserFrais&idFrais=' . $id . '" 
-                                onclick="return confirm(\'Voulez-vous vraiment refuser ce frais?\');">Refuser ce frais</a></td>';
+                            echo '<a class="btn btn-danger" href="index.php?uc=validerFrais&action=refuserFrais&idFrais=' . $id . '" 
+                                onclick="return confirm(\'Voulez-vous vraiment refuser ce frais?\');">Refuser ce frais</a>';
                         } else {
-                            echo '<td class="' . $libelleColor . '"><a href="index.php?uc=validerFrais&action=accepterFrais&idFrais=' . $id . '" 
-                                onclick="return confirm(\'Voulez-vous vraiment accepter ce frais?\');">Accepter ce frais</a></td>';
+                            echo '<a class="btn btn-success" href="index.php?uc=validerFrais&action=accepterFrais&idFrais=' . $id . '" 
+                                onclick="return confirm(\'Voulez-vous vraiment accepter ce frais?\');">Accepter ce frais</a>';
                         }
                         //Reporter frais
-                        echo '<td><a href="index.php?uc=validerFrais&action=reporterFrais&idFrais=' . $id . '" 
-                                onclick="return confirm(\'Voulez-vous vraiment reporter ce frais?\');">Reporter</a></td>';
+                        echo '<a class="btn btn-danger" href="index.php?uc=validerFrais&action=reporterFrais&idFrais=' . $id . '" 
+                                onclick="return confirm(\'Voulez-vous vraiment reporter ce frais?\');" style="margin-left:8px;">Reporter</a>';
                     }
                     ?>
+                    </td>
                 </tr>
                 <?php
             }

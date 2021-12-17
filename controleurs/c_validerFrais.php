@@ -62,7 +62,7 @@ case 'refuserFrais':
         $idFrais = filter_input(INPUT_GET, 'idFrais', FILTER_SANITIZE_STRING);
         $verifyIntegrity = $pdo->getIdFraisHorsForfait($idFrais);
         if ($verifyIntegrity != null) {
-            if ($verifyIntegrity['idvisiteur'] == $_SESSION['VF-idVisiteur'] && $verifyIntegrity['mois'] == $_SESSION['VF-mois'] && substr($verifyIntegrity['libelle'], 0, 9) != 'REFUSE : ') {
+            if ($verifyIntegrity['idVisiteur'] == $_SESSION['VF-idVisiteur'] && $verifyIntegrity['mois'] == $_SESSION['VF-mois'] && substr($verifyIntegrity['libelle'], 0, 9) != 'REFUSE : ') {
                 $pdo->refuserFrais($idFrais);
                 
                 $ficheFrais = $pdo->getLesInfosFicheFrais($idVisiteur, $mois);
@@ -90,7 +90,7 @@ case 'accepterFrais':
         $idFrais = filter_input(INPUT_GET, 'idFrais', FILTER_SANITIZE_STRING);
         $verifyIntegrity = $pdo->getIdFraisHorsForfait($idFrais);
         if ($verifyIntegrity != null) {
-            if ($verifyIntegrity['idvisiteur'] == $_SESSION['VF-idVisiteur'] && $verifyIntegrity['mois'] == $_SESSION['VF-mois'] && substr($verifyIntegrity['libelle'], 0, 9) == 'REFUSE : ') {
+            if ($verifyIntegrity['idVisiteur'] == $_SESSION['VF-idVisiteur'] && $verifyIntegrity['mois'] == $_SESSION['VF-mois'] && substr($verifyIntegrity['libelle'], 0, 9) == 'REFUSE : ') {
                 $pdo->accepterFrais($idFrais);
                 echo "<script>alert('Le frais a été accepté !')</script>";
             }
