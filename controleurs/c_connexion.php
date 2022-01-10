@@ -27,9 +27,9 @@ case 'verifyConnexion':
     $login = filter_input(INPUT_POST, 'login', FILTER_SANITIZE_STRING);
     $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
     //Récupération visiteur avec login saisit
-    $visiteur = $pdo->getInfosVisiteur($login);
+    $visiteur = $pdo->getInfosUtilisateur($login);
     //Vérification que le mot de passe de l'utilisateur corresponde avec celui saisit
-    if(password_verify($mdp, $pdo->getMdpVisiteur($login))) {
+    if(password_verify($mdp, $pdo->getMdpUtilisateur($login))) {
         //Stockage du login en variable de session pour être réutilisé après l'identification double facteur
         $_SESSION["login"] = $login;
         
@@ -53,7 +53,7 @@ case 'validerConnexion':
     //Vérification code entré avec code envoyé
     $code = filter_input(INPUT_POST, 'inputCode', FILTER_SANITIZE_STRING);
     if ($code == $_SESSION["mailCode"]) {
-        $visiteur = $pdo->getInfosVisiteur($_SESSION["login"]);
+        $visiteur = $pdo->getInfosUtilisateur($_SESSION["login"]);
         connecter($visiteur['id'], $visiteur['nom'], $visiteur['prenom'], $visiteur['profil']);
         //Supression des variables dessession inutiles
         unset($_SESSION["login"]);

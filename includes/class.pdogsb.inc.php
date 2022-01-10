@@ -83,29 +83,29 @@ class PdoGsb
     }
 
     /**
-     * Retourne les informations d'un visiteur
+     * Retourne les informations d'un utilisateur
      *
-     * @param String $login Login du visiteur
-     * @param String $mdp   Mot de passe du visiteur
+     * @param String $login Login du utilisateur
+     * @param String $mdp   Mot de passe de l'utilisateur
      *
      * @return l'id, le nom et le prénom sous la forme d'un tableau associatif
      */
-    public function getInfosVisiteur($login) {
+    public function getInfosUtilisateur($login) {
         $requetePrepare = PdoGsb::$monPdo->prepare(
-            'SELECT visiteur.id AS id, visiteur.nom AS nom, visiteur.prenom AS prenom, visiteur.email AS email, visiteur.profil AS profil '
-            . 'FROM visiteur '
-            . 'WHERE visiteur.login = :unLogin'
+            'SELECT utilisateur.id AS id, utilisateur.nom AS nom, utilisateur.prenom AS prenom, utilisateur.email AS email, utilisateur.profil AS profil '
+            . 'FROM utilisateur '
+            . 'WHERE utilisateur.login = :unLogin'
         );
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
         $requetePrepare->execute();
         return $requetePrepare->fetch();
     }
     
-    public function getMdpVisiteur($login) {
+    public function getMdpUtilisateur($login) {
     $requetePrepare = PdoGsb::$monPdo->prepare(
         'SELECT mdp '
-        . 'FROM visiteur '
-        . 'WHERE visiteur.login = :unLogin'
+        . 'FROM utilisateur '
+        . 'WHERE utilisateur.login = :unLogin'
     );
     $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
     $requetePrepare->execute();
@@ -117,7 +117,7 @@ class PdoGsb
      * La boucle foreach ne peut être utilisée ici car on procède
      * à une modification de la structure itérée - transformation du champ date-
      *
-     * @param String $idVisiteur ID du visiteur
+     * @param String $idVisiteur ID du utilisateur
      * @param String $mois       Mois sous la forme aaaamm
      *
      * @return tous les champs des lignes de frais hors forfait sous la forme
@@ -335,9 +335,9 @@ class PdoGsb
         }
         
         $requetePrepare = PdoGsb::$monPdo->prepare(
-            'INSERT INTO fichefrais (idvisiteur,mois,nbjustificatifs,'
-            . 'montantvalide,datemodif,idetat) '
-            . "VALUES (:unIdVisiteur,:unMois,0,0,now(),'CR')"
+            'INSERT INTO fichefrais (idvisiteur, mois, nbjustificatifs,'
+            . 'montantvalide, datemodif, idetat) '
+            . "VALUES (:unIdVisiteur, :unMois, 0, 0, now(), 'CR')"
         );
         
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
@@ -515,13 +515,13 @@ class PdoGsb
      * @param String $idVisiteur id du visiteur
      * @return la ligne visiteur trouvée
      */
-    public function getVisiteurById($idVisiteur) {
+    public function getVisiteurById($idUtilisateur) {
         $requetePrepare = PdoGsb::$monPdo->prepare(
             'SELECT * '
-            . 'FROM visiteur '
+            . 'FROM utilisateur '
             . 'WHERE id=:id'
         );
-        $requetePrepare->bindValue(':id', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindValue(':id', $idUtilisateur, PDO::PARAM_STR);
         $requetePrepare->execute();
         return $requetePrepare->fetch();
     }
@@ -532,10 +532,10 @@ class PdoGsb
      */
     public function getVisiteursFichesEnAttentes() {
         $requetePrepare = PdoGsb::$monPdo->prepare(
-            'SELECT visiteur.id AS id, visiteur.nom AS nom, visiteur.prenom AS prenom, visiteur.email AS email, visiteur.profil AS profil, fichefrais.mois '
-            . 'FROM visiteur '
-            . 'INNER JOIN fichefrais ON visiteur.id = fichefrais.idvisiteur '
-            . 'WHERE visiteur.profil = "visiteur" AND fichefrais.idetat = "CL" '
+            'SELECT utilisateur.id AS id, utilisateur.nom AS nom, utilisateur.prenom AS prenom, utilisateur.email AS email, utilisateur.profil AS profil, fichefrais.mois '
+            . 'FROM utilisateur '
+            . 'INNER JOIN fichefrais ON utilisateur.id = fichefrais.idvisiteur '
+            . 'WHERE utilisateur.profil = "visiteur" AND fichefrais.idetat = "CL" '
             . 'ORDER BY fichefrais.mois desc'
         );
         $requetePrepare->execute();
@@ -592,9 +592,9 @@ class PdoGsb
      */
     public function getFichesValidees() {
         $requetePrepare = PdoGSB::$monPdo->prepare(
-            'SELECT fichefrais.mois AS mois, fichefrais.idetat AS idetat, visiteur.id AS id, visiteur.nom AS nom, visiteur.prenom AS prenom '
+            'SELECT fichefrais.mois AS mois, fichefrais.idetat AS idetat, utilisateur.id AS id, utilisateur.nom AS nom, utilisateur.prenom AS prenom '
             . 'FROM fichefrais '
-            . 'INNER JOIN visiteur ON visiteur.id = fichefrais.idvisiteur '
+            . 'INNER JOIN utilisateur ON utilisateur.id = fichefrais.idvisiteur '
             . 'WHERE fichefrais.idetat ="VA";'
         );
         $requetePrepare->execute();
