@@ -26,7 +26,7 @@ case 'demandeConnexion':
 case 'verifyConnexion':
     $login = filter_input(INPUT_POST, 'login', FILTER_SANITIZE_STRING);
     $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
-    //Récupération visiteur avec login saisit
+    //Récupération utilisateur avec login saisit
     $visiteur = $pdo->getInfosUtilisateur($login);
     //Vérification que le mot de passe de l'utilisateur corresponde avec celui saisit
     if(password_verify($mdp, $pdo->getMdpUtilisateur($login))) {
