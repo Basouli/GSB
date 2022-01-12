@@ -1,13 +1,16 @@
 <?php
+if ($_SESSION['profil'] != "comptable") {
+    header('Location: index.php');
+}
 
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 switch ($action) {
 case 'selectionnerFiche':
-    $lesFiches = $pdo->getFichesValidees();
+    $fiches = $pdo->getFichesValidees();
     require 'vues/v_listeFiche.php';
     break;
 case 'etatFiche':
-    $lesFiches = $pdo->getFichesValidees();
+    $fiches = $pdo->getFichesValidees();
     
     $postValues = explode('&', filter_input(INPUT_POST, 'lstFiche', FILTER_SANITIZE_STRING));
     $idVisiteur = $postValues[0];
@@ -25,7 +28,7 @@ case 'etatFiche':
 case 'validerPayement':
     if (isset($_SESSION['VP-idVisiteur']) && isset($_SESSION['VP-mois'])) {
         $pdo->majEtatFicheFrais($_SESSION['VP-idVisiteur'], $_SESSION['VP-mois'], "RB");
-        $lesFiches = $pdo->getFichesValidees();
+        $fiches = $pdo->getFichesValidees();
         require 'vues/v_listeFiche.php';
         echo "<script>alert('Le frais a été mis en paiement !')</script>";
     } else {
@@ -33,7 +36,7 @@ case 'validerPayement':
     }
     break;
 default:
-    $lesFiches = $pdo->getFichesValidees();
+    $fiches = $pdo->getFichesValidees();
     require 'vues/v_listeFiche.php';
     break;
 }

@@ -323,16 +323,16 @@ class PdoGsb
      *
      * @param String $idVisiteur ID du visiteur
      * @param String $mois       Mois sous la forme aaaamm
-     *
-     * @return null
      */
     public function creeNouvellesLignesFrais($idVisiteur, $mois) {
         $dernierMois = $this->dernierMoisSaisi($idVisiteur);
         
         $laDerniereFiche = $this->getLesInfosFicheFrais($idVisiteur, $dernierMois);
         
-        if ($laDerniereFiche['idEtat'] == 'CR') {
-            $this->majEtatFicheFrais($idVisiteur, $dernierMois, 'CL');
+        if ($laDerniereFiche != null) {
+            if ($laDerniereFiche['idEtat'] == 'CR') {
+                $this->majEtatFicheFrais($idVisiteur, $dernierMois, 'CL');
+            }
         }
         
         $requetePrepare = PdoGsb::$monPdo->prepare(

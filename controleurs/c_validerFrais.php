@@ -1,13 +1,16 @@
 <?php
+if ($_SESSION['profil'] != "comptable") {
+    header('Location: index.php');
+}
 
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
 switch ($action) {
 case 'selectionnerFiche':
-    $visiteurs = $pdo->getVisiteursFichesEnAttentes();
-    require 'vues/v_listeVisiteur.php';
+    $fiches = $pdo->getVisiteursFichesEnAttentes();
+    require 'vues/v_listeFiche.php';
     break;
 case 'changerEtats': 
-    $values = explode('&', filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING));
+    $values = explode('&', filter_input(INPUT_POST, 'lstFiches', FILTER_SANITIZE_STRING));
     $_SESSION['VF-idVisiteur'] = $values[0];
     $_SESSION['VF-mois'] =  $values[1];
     $visiteur = $pdo->getVisiteurById($_SESSION['VF-idVisiteur']);
@@ -124,23 +127,21 @@ case 'reporterFrais':
     $idFrais = filter_input(INPUT_GET, 'idFrais', FILTER_SANITIZE_STRING);
     $fraisHorsForfaitAReporter = $pdo->getIdFraisHorsForfait($idFrais);
     
-    //Créer une nouvelle fiche pour le mois suivant.
-    $pdo->creeNouvellesLignesFrais($idVisiteur, $moisSuivant);
-    
-    //Dupliquer le frais sur la nouvelle fiche du mois suivant
-    if (nbErreurs() != 0) {
-        include 'vues/v_erreurs.php';
-    } else {
-        $pdo->creeNouveauFraisHorsForfait(
-            $idVisiteur,
-            $moisSuivant,
-            $fraisHorsForfaitAReporter['libelle'],
-            setDateFrancaise($fraisHorsForfaitAReporter['date']),
-            $fraisHorsForfaitAReporter['montant']
-        );
+    //Si le mois suivant ne comporte pas de fiche, on la créé.
+    $dernierMois = $pdo->dernierMoisSaisi($idVisiteur);
+    if ($moisSuivant != $dernierMois) {
+        $pdo->creeNouvellesLignesFrais($idVisiteur, $moisSuivant);
     }
-
-    //détruire ce fraishorsforfait
+    //Ajout du frais hors forfait à la fiche du mois suivant
+    $pdo->creeNouveauFraisHorsForfait(
+        $idVisiteur,
+        $moisSuivant,
+        $fraisHorsForfaitAReporter['libelle'],
+        dateAnglaisVersFrancais($fraisHorsForfaitAReporter['date']),
+        $fraisHorsForfaitAReporter['montant']
+    );
+    
+    //détruire le fraishorsforfait du mois en cours
     $pdo->effacerFrais($idFrais);
     
     //Affichage
@@ -154,8 +155,8 @@ case 'reporterFrais':
     require 'vues/v_validerFrais.php';
     break;
 default:
-    $visiteurs = $pdo->getVisiteursFichesEnAttentes();
-    require 'vues/v_listeVisiteur.php';
+    $fiches = $pdo->getVisiteursFichesEnAttentes();
+    require 'vues/v_listeFiche.php';
     break;
 }
 
@@ -171,9 +172,4 @@ function setMoisSuivant($mois) {
     
     $moisSuivant = strval($numAnnee) . strval($moisSuivant);
     return $moisSuivant;
-}
-
-function setDateFrancaise($maDate) {
-    @list($annee, $mois, $jour) = explode('-', $maDate);
-    return date('d/m/Y', mktime(0, 0, 0, $mois, $jour, $annee));
 }

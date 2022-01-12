@@ -46,10 +46,10 @@
                     <td class="<?php echo $libelleColor; ?>"><?php echo $montant ?></td>
                     <td class="<?php echo $libelleColor; ?>">
                     <?php 
-                    if ($uc == 'gererFrais') {
+                    if ($_SESSION['profil'] == "visiteur") {
                         echo '<a class="btn btn-danger" href="index.php?uc=gererFrais&action=supprimerFrais&idFrais=' . $id . '" 
                            onclick="return confirm(\'Voulez-vous vraiment supprimer ce frais?\');">Supprimer ce frais</a>';
-                    } else if ($uc == 'validerFrais') {
+                    } else if ($_SESSION['profil'] == "comptable") {
                         //ACCEPTER OU REFUSER SELON SON ETAT
                         if (strcmp(substr($libelle, 0, 9), 'REFUSE : ')) {
                             echo '<a class="btn btn-danger" href="index.php?uc=validerFrais&action=refuserFrais&idFrais=' . $id . '" 
