@@ -1,4 +1,12 @@
-<h2>Etat Payement des Fiches</h2>
+
+<?php 
+if ($uc == 'validerFrais') {
+    ?><h2>Valider Fiche de Frais</h2><?php
+} else if ($uc == 'etatPayement') {
+    ?><h2>Etat Payement des Fiches</h2><?php
+}
+?>      
+
 <div class="row">
     <?php
     if ($fiches != null) {
@@ -7,8 +15,14 @@
             <h3>Sélectionner une fiche : </h3>
         </div>
         <div class="col-md-4">
-            <form action="index.php?uc=validerFrais&action=changerEtats"
-                  method="post" role="form">
+            <form action=
+            <?php 
+                if ($uc == 'validerFrais') {
+                    ?>"index.php?uc=validerFrais&action=changerEtats"<?php
+                } else if ($uc == 'etatPayement') {
+                    ?>"index.php?uc=etatPayement&action=etatFiche"<?php
+                }
+            ?> method="post" role="form">
                 <div class="form-group">
                     <label for="lstFiche" accesskey="n">Fiches : </label>
                     <select id="lstFiches" name="lstFiches" class="form-control">

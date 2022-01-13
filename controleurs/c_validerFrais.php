@@ -113,6 +113,7 @@ case 'accepterFrais':
     break;
 case 'validerFiche':
     if (isset($_SESSION['VF-idVisiteur']) && isset($_SESSION['VF-mois'])) {
+        $pdo->setMontantValide($_SESSION['VF-idVisiteur'], $_SESSION['VF-mois']);
         $pdo->majEtatFicheFrais($_SESSION['VF-idVisiteur'], $_SESSION['VF-mois'], "VA");
         header('Location: index.php?uc=validerFrais&action=selectionnerFiche');
     } else {
