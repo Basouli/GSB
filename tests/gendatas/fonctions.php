@@ -23,8 +23,9 @@
  *
  * @return Array de visiteurs
  */
-function getLesVisiteurs($pdo) {
-    $req = 'select * from visiteur';
+function getLesVisiteurs($pdo)
+{
+    $req = 'select * from utilisateur';
     $res = $pdo->query($req);
     $lesLignes = $res->fetchAll();
     return $lesLignes;
