@@ -9,7 +9,8 @@
  * @package   GSB
  * @author    Réseau CERTA <contact@reseaucerta.org>
  * @author    José GIL <jgil@ac-nice.fr>
- * @copyright 2017 Réseau CERTA
+ * @author    Killian Martin  <killian8342@gmail.com> 
+ * @author    Basil Collette <basil.collette@outlook.fr> * @copyright 2017 Réseau CERTA
  * @license   Réseau CERTA
  * @version   GIT: <0>
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
@@ -22,8 +23,7 @@
  *
  * @return Array de visiteurs
  */
-function getLesVisiteurs($pdo)
-{
+function getLesVisiteurs($pdo) {
     $req = 'select * from visiteur';
     $res = $pdo->query($req);
     $lesLignes = $res->fetchAll();
@@ -38,8 +38,7 @@ function getLesVisiteurs($pdo)
  *
  * @return Integer avec le nombre d'enregistrements
  */
-function getNbTable($pdo, $table)
-{
+function getNbTable($pdo, $table) {
     $req = 'select count(*) from ' . $table;
     $res = $pdo->query($req);
     $nbLignes = $res->fetch();
@@ -53,8 +52,7 @@ function getNbTable($pdo, $table)
  *
  * @return Array de fiches de frais
  */
-function getLesFichesFrais($pdo)
-{
+function getLesFichesFrais($pdo) {
     $req = 'select * from fichefrais';
     $res = $pdo->query($req);
     $lesLignes = $res->fetchAll();
@@ -68,11 +66,10 @@ function getLesFichesFrais($pdo)
  *
  * @return Array de id de fiches de frais
  */
-function getLesIdFraisForfait($pdo)
-{
+function getLesIdFraisForfait($pdo) {
     $req = 'select fraisforfait.id as id '
-        . 'from fraisforfait '
-        . 'order by fraisforfait.id';
+            . 'from fraisforfait '
+            . 'order by fraisforfait.id';
     $res = $pdo->query($req);
     $lesLignes = $res->fetchAll();
     return $lesLignes;
@@ -85,8 +82,7 @@ function getLesIdFraisForfait($pdo)
  *
  * @return String le mois d'après
  */
-function getMoisSuivant($mois)
-{
+function getMoisSuivant($mois) {
     $numAnnee = substr($mois, 0, 4);
     $numMois = substr($mois, 4, 2);
     if ($numMois == '12') {
@@ -108,8 +104,7 @@ function getMoisSuivant($mois)
  *
  * @return String le mois d'avant
  */
-function getMoisPrecedent($mois)
-{
+function getMoisPrecedent($mois) {
     $numAnnee = substr($mois, 0, 4);
     $numMois = substr($mois, 4, 2);
     if ($numMois == '01') {
@@ -131,8 +126,7 @@ function getMoisPrecedent($mois)
  *
  * @return null
  */
-function creationFichesFrais($pdo)
-{
+function creationFichesFrais($pdo) {
     global $moisDebut; // valeur dans majGSB.php
     $lesVisiteurs = getLesVisiteurs($pdo);
     $moisActuel = getMois(date('d/m/Y'));
@@ -159,9 +153,9 @@ function creationFichesFrais($pdo)
             $dateModif = $numAnnee . '-' . $numMois . '-' . rand(1, 8);
             $nbJustificatifs = rand(0, 12);
             $req = 'insert into fichefrais(idvisiteur,mois,nbjustificatifs,'
-                . 'montantvalide,datemodif,idetat) '
-                . "values ('$idVisiteur','$moisCourant',$nbJustificatifs,"
-                . "0,'$dateModif','$etat');";
+                    . 'montantvalide,datemodif,idetat) '
+                    . "values ('$idVisiteur','$moisCourant',$nbJustificatifs,"
+                    . "0,'$dateModif','$etat');";
             $pdo->exec($req);
             $moisCourant = getMoisPrecedent($moisCourant);
             $n++;
@@ -176,8 +170,7 @@ function creationFichesFrais($pdo)
  *
  * @return null
  */
-function creationFraisForfait($pdo)
-{
+function creationFraisForfait($pdo) {
     $lesFichesFrais = getLesFichesFrais($pdo);
     $lesIdFraisForfait = getLesIdFraisForfait($pdo);
     foreach ($lesFichesFrais as $uneFicheFrais) {
@@ -191,8 +184,8 @@ function creationFraisForfait($pdo)
                 $quantite = rand(2, 20);
             }
             $req = 'insert into lignefraisforfait(idvisiteur,mois,'
-                . 'idfraisforfait,quantite) '
-                . "values('$idVisiteur','$mois','$idFraisForfait',$quantite);";
+                    . 'idfraisforfait,quantite) '
+                    . "values('$idVisiteur','$mois','$idFraisForfait',$quantite);";
             $pdo->exec($req);
         }
     }
@@ -204,8 +197,7 @@ function creationFraisForfait($pdo)
  *
  * @return Array d'exemples de frais hors forfait
  */
-function getDesFraisHorsForfait()
-{
+function getDesFraisHorsForfait() {
     $tab = array(
         1 => array(
             'lib' => 'Repas avec praticien',
@@ -263,8 +255,7 @@ function getDesFraisHorsForfait()
  *
  * @return null
  */
-function updateMdpVisiteur($pdo)
-{
+function updateMdpVisiteur($pdo) {
     $req = 'select * from visiteur';
     $res = $pdo->query($req);
     $lesLignes = $res->fetchAll();
@@ -288,8 +279,7 @@ function updateMdpVisiteur($pdo)
  *
  * @return null
  */
-function creationFraisHorsForfait($pdo)
-{
+function creationFraisHorsForfait($pdo) {
     $desFrais = getDesFraisHorsForfait();
     $lesFichesFrais = getLesFichesFrais($pdo);
 
@@ -328,8 +318,7 @@ function creationFraisHorsForfait($pdo)
  *
  * @return String avec le mois au format aaaamm
  */
-function getMois($date)
-{
+function getMois($date) {
     @list($jour, $mois, $annee) = explode('/', $date);
     unset($jour);
     if (strlen($mois) == 1) {
@@ -345,15 +334,14 @@ function getMois($date)
  *
  * @return null
  */
-function majFicheFrais($pdo)
-{
+function majFicheFrais($pdo) {
     $lesFichesFrais = getLesFichesFrais($pdo);
     foreach ($lesFichesFrais as $uneFicheFrais) {
         $idVisiteur = $uneFicheFrais['idvisiteur'];
         $mois = $uneFicheFrais['mois'];
         $req = 'select sum(montant) as cumul from lignefraishorsforfait '
-            . "where lignefraishorsforfait.idvisiteur = '$idVisiteur' "
-            . "and lignefraishorsforfait.mois = '$mois' ";
+                . "where lignefraishorsforfait.idvisiteur = '$idVisiteur' "
+                . "and lignefraishorsforfait.mois = '$mois' ";
         $res = $pdo->query($req);
         $ligne = $res->fetch();
         $cumulMontantHF = $ligne['cumul'];
@@ -374,7 +362,7 @@ function majFicheFrais($pdo)
             $montantValide = $montantEngage * rand(80, 100) / 100;
         }
         $req = "update fichefrais set montantvalide = $montantValide "
-            . "where idvisiteur = '$idVisiteur' and mois = '$mois'";
+                . "where idvisiteur = '$idVisiteur' and mois = '$mois'";
         $pdo->exec($req);
     }
 }

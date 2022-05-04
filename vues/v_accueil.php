@@ -8,7 +8,8 @@
  * @package   GSB
  * @author    Réseau CERTA <contact@reseaucerta.org>
  * @author    José GIL <jgil@ac-nice.fr>
- * @copyright 2017 Réseau CERTA
+ * @author    Killian Martin  <killian8342@gmail.com> 
+ * @author    Basil Collette <basil.collette@outlook.fr> * @copyright 2017 Réseau CERTA
  * @license   Réseau CERTA
  * @version   GIT: <0>
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
@@ -16,8 +17,8 @@
 ?>
 <div id="accueil">
     <h2>
-        Gestion des frais<small> - <?php echo $_SESSION['profil']?> : 
-            <?php 
+        Gestion des frais<small> - <?php echo $_SESSION['profil'] ?> : 
+            <?php
             echo $_SESSION['prenom'] . ' ' . $_SESSION['nom']
             ?></small>
     </h2>
@@ -34,9 +35,8 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        
+
                         <?php
-                        
                         //COMPTABLE
                         if ($_SESSION['profil'] == "comptable") {
                             echo '
@@ -51,9 +51,8 @@
                                     <span class="glyphicon glyphicon-list-alt"></span>
                                     <br>SUIVRE PAYEMENT FICHE FRAIS
                                 </a>';
-                            
-                            
-                        //VISITEUR
+
+                            //VISITEUR
                         } else if ($_SESSION['profil'] == "visiteur") {
                             echo '
                                 <a href="index.php?uc=gererFrais&action=saisirFrais"
@@ -69,7 +68,7 @@
                                 </a>';
                         }
                         ?>
-                        
+
                     </div>
                 </div>
             </div>

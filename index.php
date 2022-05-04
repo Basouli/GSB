@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Index du projet GSB
  *
@@ -8,12 +9,13 @@
  * @package   GSB
  * @author    Réseau CERTA <contact@reseaucerta.org>
  * @author    José GIL <jgil@ac-nice.fr>
+ * @author    Killian Martin  <killian8342@gmail.com> 
+ * @author    Basil Collette <basil.collette@outlook.fr> 
  * @copyright 2017 Réseau CERTA
  * @license   Réseau CERTA
  * @version   GIT: <0>
  * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
  */
-
 require_once 'includes/fct.inc.php';
 require_once 'includes/class.pdogsb.inc.php';
 session_start();
@@ -30,30 +32,29 @@ if ($uc && !$estConnecte && $uc != "mailVerification") {
 verifySession($uc);
 
 switch ($uc) {
-case 'connexion':
-    include 'controleurs/c_connexion.php';
-    break;
-case 'accueil':
-    include 'controleurs/c_accueil.php';
-    break;
-case 'gererFrais':
-    include 'controleurs/c_gererFrais.php';
-    break;
-case 'etatFrais':
-    include 'controleurs/c_etatFrais.php';
-    break;
-case 'validerFrais':
-    include 'controleurs/c_validerFrais.php';
-    break;
-case 'etatPayement':
-    include 'controleurs/c_etatPayement.php';
-    break;
-case 'deconnexion':
-    include 'controleurs/c_deconnexion.php';
-    break;
+    case 'connexion':
+        include 'controleurs/c_connexion.php';
+        break;
+    case 'accueil':
+        include 'controleurs/c_accueil.php';
+        break;
+    case 'gererFrais':
+        include 'controleurs/c_gererFrais.php';
+        break;
+    case 'etatFrais':
+        include 'controleurs/c_etatFrais.php';
+        break;
+    case 'validerFrais':
+        include 'controleurs/c_validerFrais.php';
+        break;
+    case 'etatPayement':
+        include 'controleurs/c_etatPayement.php';
+        break;
+    case 'deconnexion':
+        include 'controleurs/c_deconnexion.php';
+        break;
 }
 require 'vues/v_pied.php';
-
 
 function verifySession($uc) {
     if ($uc != 'validerFrais') {
@@ -76,4 +77,5 @@ function verifySession($uc) {
         }
     }
 }
+
 //TEST2
